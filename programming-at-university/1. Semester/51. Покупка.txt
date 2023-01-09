@@ -1,0 +1,18 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+  
+  long double n, score;
+  unsigned int a, sum, digit;
+  std::cin >> a >> n >> sum;
+
+  score = ((n / 100) * a) + a;
+  digit = sum / score;
+
+  std::cout << digit;
+  
+  return 0;
+}

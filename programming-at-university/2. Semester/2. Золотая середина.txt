@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+void MergeSort(std::vector<int>& v, int begin, int end) {
+
+    if (begin == end) {
+        return;
+    }
+
+    int mid = (begin + end) / 2;
+
+    MergeSort(v, begin, mid);
+    MergeSort(v, mid + 1, end);
+
+    std::vector<int> t;
+
+    for (int i = begin, j = mid + 1; i <= mid || j <= end;) {
+
+        if (i > mid) {
+            t.push_back(v[j++]);
+        } else if (j > end) {
+            t.push_back(v[i++]);
+        } else if (v[i] <= v[j]) {
+            t.push_back(v[i++]);
+        } else {
+            t.push_back(v[j++]);
+        }
+    }
+
+    for (int i = 0; i < t.size(); i++) {
+        v[begin + i] = t[i];
+    }
+}
+
+int main() {
+
+    std::ifstream fin ("input.txt");
+    std::ofstream fout ("output.txt");
+
+    std::vector<int> v;
+    int n, digit; fin >> n;
+
+    for (int i = 0; i < n; i++) {
+        fin >> digit;
+        v.push_back(digit);
+        MergeSort(v, 0, i);
+        int mid = i / 2;
+        fout << v[mid] << " ";
+    }
+
+    return 0;
+}

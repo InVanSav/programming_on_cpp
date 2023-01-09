@@ -1,0 +1,55 @@
+#include <fstream>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <stack>
+
+int main() {
+  
+	std::ifstream fin("input.txt");
+	std::ofstream fout("output.txt");
+  
+	std::stack<std::pair<int, int>> stack;
+	std::vector<int> line;
+	std::vector<int> solution;
+	int N, i;
+	fin >> N;
+  
+	line.resize(N);
+	solution.resize(N);
+  
+	for (int i(0); i < N; i++) {
+		fin >> line[i];
+	}
+  
+	i = 1;
+	stack.push(std::make_pair(line[0], 0));
+  
+	while (i < line.size()) {
+    
+		if (line[i] <= stack.top().first) {
+			stack.push(std::make_pair(line[i], i));
+			i++; 
+		} else {
+			solution[stack.top().second] = line[i];
+			stack.pop();
+      
+			if (stack.empty()) {
+				stack.push(std::make_pair(line[i],i));
+				i++;
+			}
+		}
+	}
+  
+	while (!stack.empty()) {
+		solution[stack.top().second] = stack.top().first;
+		stack.pop();
+	}
+  
+	for (int j(0); j < solution.size(); j++) {
+		fout << solution[j] << ' ';
+	}
+  
+	return 0;
+
+}

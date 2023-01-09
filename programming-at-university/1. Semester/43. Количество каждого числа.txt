@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+
+  std::ifstream fin ("input.txt");
+  std::ofstream fout ("output.txt");
+  
+  int n;
+  fin >> n;
+  int arr[n], baf;
+
+  for (int i = 0; i < n; i++) {
+    fin >> arr[i];
+  }
+
+  for (int i = 0; i < n - 1; i++) {
+    for (int j = 0; j < n - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        std::swap(arr[j], arr[j+1]);
+      }
+    }
+  }
+  
+  for (int i = 0; i < n; i++) {
+    int count = 0;
+    for (int j = 0; j < n; j++) {
+      if (arr[i] == arr[j]) {
+        count++;
+      }
+    }
+    if (arr[i] != arr[i+1]) {
+      fout << arr[i] << " " << count << std::endl;
+    }
+  }
+
+  return 0;
+}
+
+
+
+
+
+Способ №2:
+

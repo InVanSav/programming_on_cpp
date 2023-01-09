@@ -1,0 +1,21 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+  ifstream fin ("input.txt");
+  ofstream fout ("output.txt");
+  
+  unsigned int Sos_iski, Gav, Shar;
+  int speed_G, speed_Sh; //team;
+  fin >> Sos_iski >> Gav >> Shar;
+
+  //team = Gav + Shar;
+  speed_G = (Sos_iski*Gav) / (Gav + Shar);
+  speed_Sh = (Sos_iski*Shar) / (Gav + Shar);
+
+  fout << speed_G << " " << speed_Sh;
+
+  return 0;
+}

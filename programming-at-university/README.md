@@ -1,0 +1,1 @@
+# All tasks from university 1 course

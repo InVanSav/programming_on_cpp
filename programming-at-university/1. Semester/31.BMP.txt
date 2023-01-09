@@ -1,0 +1,84 @@
+#include <iostream>
+#include <fstream>
+#pragma pack(1)
+using namespace std;
+
+struct BITMAPFILEHEADER
+{
+  char bfType[2];
+  int  bfSize;
+  int  bfReserved1 = 0;
+  unsigned int bfOffBits;
+};
+
+struct BITMAPINFO
+{
+  unsigned int  biSize;
+  unsigned int  biWidth;
+  unsigned int  biHeight;
+  short         biPlanes;
+  short         biBitCount;
+  unsigned int  biCompression;
+  int           biSizeImage = 0;
+  unsigned int  biXPelsPerMeter;
+  unsigned int  biYPelsPerMeter;
+  int           biClrUsed;
+  int           biClrImportan;
+};
+
+struct RGBTRIPLE
+{
+  unsigned char rgbtBlue;
+  unsigned char rgbtGreen;
+  unsigned char rgbtRed;
+};
+
+int main()
+{
+  ifstream fin ("123.bmp");
+  ofstream fout ("321.bmp");
+
+  BITMAPFILEHEADER* map = new BITMAPFILEHEADER;
+  BITMAPINFO* info = new BITMAPINFO;
+  RGBTRIPLE* rgb = new RGBTRIPLE;
+
+  fin.read((char*)map, sizeof(BITMAPFILEHEADER));
+  fin.read((char*)info, sizeof(BITMAPINFO));
+
+  int height = info->biHeight;
+  int width = info->biWidth;
+  RGBTRIPLE arr[height][width];
+
+  fin.read((char*)arr, height*width*sizeof(RGBTRIPLE));
+  
+  for (int i = 0; i < height/2; i++)
+  {
+    for (int j = 0; j < width; j++)
+    {
+      arr[i][j].rgbtBlue = arr[height-i][j].rgbtBlue;
+    }
+  }
+  for (int i = 0; i < height/2; i++)
+  {
+    for (int j = 0; j < width; j++)
+    {
+      arr[i][j].rgbtGreen = arr[height-i][j].rgbtGreen;
+    }
+  }
+  for (int i = 0; i < height/2; i++)
+  {
+    for (int j = 0; j < width; j++)
+    {
+      arr[i][j].rgbtRed = arr[height-i][j].rgbtRed;
+    }
+  }
+  fout.write((char*)map, sizeof(BITMAPFILEHEADER));
+  fout.write((char*)info, sizeof(BITMAPINFO));
+  fout.write((char*)arr, height*width*sizeof(RGBTRIPLE));
+  
+  delete map;
+  delete info;
+  delete rgb;
+  
+  return 0;
+}

@@ -1,0 +1,1 @@
+# All tasks from cource of C++ learning

@@ -1,0 +1,38 @@
+#include <fstream>
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+  ifstream fin ("input.txt");
+  ofstream fout ("output.txt");
+
+  int x1, y1, x2, y2, x3, y3, x4, y4, x, y;
+  fin >> x1 >> y1 >> x2 >> y2 >> x >> y;
+
+  double dis_cen, dis_ver_1, dis_ver_2, dis_ver_3, dis_ver_4, center_x, center_y;
+
+  x3 = x2;
+  y3 = y1;
+  x4 = x1;
+  y4 = y2;
+  center_x = (x1 + x2) / 2;
+  center_y = (y1 + y2) / 2;
+  dis_cen = pow((pow((x-center_x),2)+pow((y-center_y),2)),0.5);
+  dis_ver_1 = pow((pow((x-x1),2) + pow ((y-y1),2)), 0.5);
+  dis_ver_2 = pow((pow((x-x2),2) + pow ((y-y2),2)), 0.5);
+  dis_ver_3 = pow((pow((x-x3),2) + pow ((y-y3),2)), 0.5);
+  dis_ver_4 = pow((pow((x-x4),2) + pow ((y-y4),2)), 0.5);
+
+  if ((dis_cen <= dis_ver_1) && (dis_cen <= dis_ver_2) && (dis_cen <= dis_ver_3) && (dis_cen <= dis_ver_4))
+  {
+    fout << "CENTER" << endl;
+  }
+  else 
+  {
+    fout << "CORNER" << endl;
+  }
+  return 0;
+}

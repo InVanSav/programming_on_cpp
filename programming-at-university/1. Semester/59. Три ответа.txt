@@ -1,0 +1,27 @@
+#include <iostream>
+#include <fstream>
+
+int main() {
+  
+  int a, m, l, n, a_1, m_1, l_1;
+  std::cin >> a >> m >> l >> n;
+
+  a_1 = abs(a - n);
+  m_1 = abs(m - n);
+  l_1 = abs(l - n);
+  
+
+  if (a_1 < m_1 && a_1 < l_1) {
+    std::cout << "Anton";
+  }
+  else if (m_1 < a_1 && m_1 < l_1) {
+    std::cout << "Misha";
+  }
+  else if (l_1 < a_1 && l_1 < m_1) {
+    std::cout << "Lesha";
+  }
+  else {
+    std::cout << "Draw";
+  }
+  return 0;
+}

@@ -1,0 +1,26 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+  ifstream fin ("input.txt");
+  ofstream fout ("output.txt");
+
+  unsigned int a,b;
+  fin >> a >> b;
+  int NOD, NOK;
+
+  for (int i = b; i > 0; i--) // находим НОД
+      if (a % i == 0 && b % i == 0)
+      {
+       NOD = i;
+        break;
+      }
+  NOK = (a*b)/NOD;// NOK мы находим, узнав NOD;
+
+  fout << NOD << " " << NOK;
+
+  return 0;
+}

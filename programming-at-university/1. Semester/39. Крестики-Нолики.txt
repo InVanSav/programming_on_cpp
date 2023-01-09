@@ -1,0 +1,263 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <sstream>
+#include <deque>
+#include <cmath>
+
+using namespace std;
+
+const char X = 'X';
+const char O = 'O';
+const char EMPTY = ' ';
+const char TIE = 'T';
+const char NO_ONE = 'N';
+
+void instructions() {
+  cout << "Добро пожаловать в игру Крестики-Нолики!" << endl;
+  cout << "Сделайте свой ход, введя цифру от 0 до 8." << endl;
+  cout << "Учитывая, что поле имеет следующий вид:" << endl << endl;
+  cout << "  " << 0 << " " << 1 << " " << 2 << endl;
+  cout << 0 << " .│.│.\n" << " ─┼─┼─\n" << 1 << " .│.│.\n" << "  ─┼─┼─\n" << 2 << " " << ".│.│.\n" << endl;
+  cout << "Верхняя левая клетка соответсвует числу 0" << endl << "Нижняя правая клетка соответствует числу 8" << endl << endl;
+};
+
+char askYesNo(string qestion) {
+
+  char response;
+  do {
+    cout << "Ответьте на вопрос сокращенно yes/no == y/n." << endl << endl; 
+    cout << qestion << " " << "(y/n): ";
+    cin >> response;
+  }
+  while(response != 'y' && response != 'n');
+    return response;
+};
+
+int askNumber(string question, int high, int low) {
+
+  int number;
+
+  cout << question << "(" << high << "-" << low << "): ";
+  cin >> number;
+
+  return number;
+};
+
+char humanPiece() {
+  
+  char go_first = askYesNo("Хотите ли вы сделать первый ход?");
+
+  if (go_first == 'y') {
+    cout << endl << "Тогда сделай же первый ход!" << endl;
+    return X;
+  }
+  else if (go_first == 'n') { 
+    cout << "Надеюсь, вы не пожалеете о своём выборе. Хотя мне нравится видеть слёзы проигравших!" << endl;
+    return O;
+  }
+};
+
+char opponent(char piece) {
+  if (piece == X) {
+    return O;
+  }
+  else if (piece == O) {
+    return X;
+  }
+};
+
+void displayBoard(const vector<char>& board) {
+
+  cout << "  " << 0 << " " << 1 << " " << 2 << endl;
+  cout << 0 << " " << board[0] << "│" << board[1] << "│" << board[2] << endl << "  " << "─┼─┼─\n";
+  cout << 1 << " " << board[3] << "│" << board[4] << "│" << board[5] << endl << "  " << "─┼─┼─\n";
+  cout << 2 << " " << board[6] << "│" << board[7] << "│" << board[8] << endl;
+};
+
+char winner(const vector<char>& board) {
+
+  const int WINNING_ROWS[8][3] = { 
+    {0, 1, 2},
+    {3, 4, 5},
+    {6, 7, 8},
+    {0, 3, 6},
+    {1, 4, 7},
+    {2, 5, 8},
+    {0, 4, 8},
+    {2, 4, 6} };
+  
+  const int TOTAL_ROWS = 8;
+
+  for (int row = 0; row < TOTAL_ROWS; ++row) {
+    
+    if ( (board[WINNING_ROWS[row][0]] != EMPTY) && (board[WINNING_ROWS[row][0]] == board[WINNING_ROWS[row][1]]) && (board[WINNING_ROWS[row][1]] == board[WINNING_ROWS[row][2]]) ) {
+      return board[WINNING_ROWS[row][0]];
+    }
+  }
+
+  if (count(board.begin(), board.end(), EMPTY) == 0) {
+    return TIE;
+  }
+
+  else {
+    return NO_ONE;
+  }
+};
+
+bool isLegal(int move, const vector<char>& board) {
+
+  return (board[move] == EMPTY);
+};
+
+int humanMove(const vector<char>& board, char human) {
+
+  int move = askNumber("Каков ваш ход?", 0, (board.size()-1));
+  
+  while (!isLegal(move, board)) {
+    cout << "Такой ход сделать нельзя! Хитрый человек..." << endl;
+    move = askNumber("Каков ваш ход?", 0, (board.size()-1));
+  }
+  cout << "Славно." << endl;
+  return move;
+};
+
+int apponentMove(const vector<char>& board, char human_1) {
+
+  int move = askNumber("Ход соперника!", 0, (board.size()-1));
+
+  while (!isLegal(move, board)) {
+    cout << "Такой ход сделать нельзя! Хитрый человек..." << endl;
+    move = askNumber("Каков ваш ход, соперник?", 0, (board.size()-1));
+  }
+  cout << "Не дурно." << endl;
+  return move;
+};
+
+int computerMove(vector<char> board, char computer) {
+
+  unsigned int move = 0;
+  bool found = false;
+
+  while (!found && move < board.size()) {
+    
+    if (isLegal(move, board)) {
+      board[move] = computer;
+      found = winner(board) == computer;
+      board[move] = EMPTY;
+    }
+    if (!found) {
+      ++move;
+    }
+  }
+
+  if (!found) {
+    move = 0;
+    char human = opponent(computer);
+
+    while (!found && move < board.size()) {
+
+      if (isLegal(move, board)) {
+        board[move] = human;
+        found = winner(board) == human;
+        board[move] = EMPTY;
+      }
+      if (!found) {
+        ++move;
+      }
+    }
+  }
+  
+  if (!found) {
+    move = 0;
+    unsigned int i = 0;
+    const int BEST_MOVES[] = {4, 6, 2, 8, 0, 1, 7, 5, 3};
+
+    while (!found && i < board.size()) {
+      move = BEST_MOVES[i];
+
+      if (isLegal(move, board)) {
+        found = true;
+      }
+      ++i;
+    }
+  }
+  cout << endl << "Ахахахахаха, ты меня никогда не победишь!!!" << endl;
+  return move;
+};
+
+void announceWinner(char winner, char computer, char human, char human_1) {
+
+  if (winner == computer) {
+    cout << winner << "'s won! (Компьютер победитель)" << endl;
+    cout << "Ты думал, что сможешь победить меня, человек?" << endl;
+    cout << "Ахахахахахаха" << endl << "Глупец...";
+  }
+  else if (winner == human) {
+    cout << winner << "'s won! (Противник победитель)" << endl;
+    cout << "Подотри слезы!" << endl;
+    cout << "Ахахахахахаха" << endl << "Это было просто...";
+  }
+  else if (winner == human_1) {
+    cout << winner << "'s won! (Противник победитель)" << endl;
+    cout << "Подотри слезы!" << endl;
+    cout << "Ахахахахахаха" << endl << "Это было просто...";
+  }
+  else {
+    cout << "Ничья!" << endl;
+    cout << "В этот раз оба соперника показали себя хорошо." << endl;
+    cout << "Я, конечно, рад за вас двоих, но не искренне:)" << endl;
+  }
+};
+
+int main() {
+  
+  int move;
+  const int NUM_SQUARES = 9;
+  vector<char> board(NUM_SQUARES, EMPTY);
+
+  instructions();
+
+  char human = humanPiece();
+  char human_1 = opponent(human);
+  char computer = opponent(human);
+  char turn = X;
+  int counting[9], i = 0;
+  char ch_counting[9];
+
+  displayBoard(board);
+
+  while (winner(board) == NO_ONE) {
+    if (turn == human){
+      move = humanMove(board, human);
+      board[move] = human;
+      counting[i] = move;
+      ch_counting[i] = turn;
+      ++i;
+      cout << endl << "Player: " << turn << endl << "Move: " << move << endl << endl;
+    }
+    else {
+      move = apponentMove(board, human_1);
+      board[move] = human_1;
+      counting[i] = move;
+      ch_counting[i] = turn;
+      ++i;
+      cout << endl << "Player: " << turn << endl << "Move: " << move << endl << endl;
+    }
+    displayBoard(board);
+    turn = opponent(turn);
+  }
+  announceWinner(winner(board), computer, human, human_1);
+  
+  cout << endl << endl << "History of moves!: ";
+  for (int i = 0; i < 9; i++) {
+    cout << endl << i+1 << "." << " " << "Player " << ch_counting[i] << ": " << counting[i] << endl;
+
+    if (ch_counting[i+1] != 'X' && ch_counting[i+1] != 'O') {
+      break;
+    }
+  }
+  return 0;
+}

@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+int main ()
+{
+  FILE*fin = fopen("input.txt", "r");
+  int A, B;
+  fscanf (fin, "%d%d", &A, &B);
+  FILE*fout = fopen ("output.txt", "w");
+  fprintf (fout, "%d", A+B);
+  return 0;
+}

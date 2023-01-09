@@ -1,0 +1,52 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+
+char preschoolSort(std::vector<int>& arr) {
+
+    unsigned int a = 0, size = arr.size();
+    unsigned int capitalLetters[26] = { 65, 66, 67, 68, 69,
+                                        70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+                                        80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
+                                        90 };
+    bool flag;
+
+    for (int i = 0; i < size; i++) {
+        for (unsigned int capitalLetter : capitalLetters) {
+
+            (arr[i] == capitalLetter) ? flag = true, a++ : flag = false;
+
+            if (flag) {
+                break;
+            }
+
+        }
+        if (!flag && a >= 1) {
+            return 'N';
+        }
+    }
+
+    return 'Y';
+}
+
+int main() {
+
+    std::ifstream fin ("input.txt");
+    std::ofstream fout ("output.txt");
+
+    std::vector<int> arr;
+    unsigned char letter;
+    unsigned int i = 0;
+
+    while (fin >> letter) {
+        arr.resize(arr.size() + 1);
+        arr[i] = (int) letter;
+        ++i;
+    }
+
+    unsigned char value = preschoolSort(arr);
+    fout << ((value == 'Y') ? "YES" : "NO");
+
+    return 0;
+}
+

@@ -1,0 +1,218 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+
+struct data_1 {
+
+  int math, programming, teacher;
+  int index;
+
+};
+
+struct data_2 {
+
+  int math, programming, teacher;
+  int count_changes;
+  std::vector<data_1> teach;
+
+};
+
+int power_2(int x) {
+  
+  int p2 = 1;
+  
+  while (true) {
+    if (p2 >= x) {
+      return p2;
+    }
+    p2 <<= 1;
+  }
+  
+}
+
+void build(std::vector<data_2> &tree, int node, int tl, int tr) {
+  
+  if (tl == tr) {
+    
+    tree[node].count_changes = 0;
+    tree[node].math = -1;
+    tree[node].teacher = -1;
+    tree[node].programming = -1;
+    
+  } 
+    
+  else {
+    
+    int m = (tr + tl) / 2;
+    build(tree, node * 2 + 1, tl, m);
+    build(tree, node * 2 + 2, m + 1, tr);
+    tree[node] = (
+        (tree[node * 2 + 1].teacher > tree[node * 2 + 2].teacher) 
+        ? 
+        tree[node * 2 + 1] 
+        : 
+        tree[node * 2 + 2]
+      );
+    
+  }
+  
+}
+
+data_2 get_max(std::vector<data_2> &tree, int node, int l, int r, int tl, int tr) {
+  
+  if (l > r) {
+    return {-1};
+  }
+  
+  if (l == tl && r == tr) {
+    return tree[node];
+  }
+  
+  int tm = (tr + tl) / 2;
+  data_2 m1 = get_max(tree, node * 2 + 1, l, std::min(tm, r), tl, tm);
+  data_2 m2 = get_max(tree, node * 2 + 2, std::max(l, tm + 1), r, tm + 1, tr);
+  return ((m1.teacher > m2.teacher) ? m1 : m2);
+  
+}
+
+void update(std::vector<data_2> &tree, int node, int tl, int tr, int pos, int new_val, int main_val, data_1 st) {
+  
+  if (tl == tr) {
+    
+    tree[node].teach.push_back(st);
+    tree[node].count_changes++;
+    tree[node].math = main_val;
+    tree[node].teacher = new_val;
+    tree[node].programming = pos;
+    
+  } 
+    
+  else {
+    
+    int m = (tr + tl) / 2;
+    
+    if (pos <= m) {
+      update(tree, node * 2 + 1, tl, m, pos, new_val, main_val, st);
+    } else {
+      update(tree, node * 2 + 2, m + 1, tr, pos, new_val, main_val, st);
+    }
+    
+    tree[node] = (
+        (tree[node * 2 + 1].teacher > tree[node * 2 + 2].teacher) 
+        ?
+        tree[node * 2 + 1] 
+        : 
+        tree[node * 2 + 2]
+      );
+  }
+  
+}
+
+bool main_cmp(const data_1 &a, const data_1 &b) {
+  return a.math < b.math;
+}
+
+bool template_cmp(const data_1 &a, const data_1 &b) {
+  return a.programming < b.programming;
+}
+
+int main() {
+  
+  std::ifstream fin("input.txt");
+  std::ofstream fout("output.txt");
+
+  int n;
+  fin >> n;
+
+  std::vector<data_1> men(n);
+  std::vector<int> ap(n);
+  std::vector<bool> cand(n);
+  std::vector<data_2> tree(n * 4);
+
+  int n_2 = power_2(n);
+
+  for (int i = 0; i < n; i++) {
+    fin >> men[i].math >> men[i].programming >> men[i].teacher;
+    men[i].index = i;
+  }
+  
+  fin.close();
+
+  sort(men.begin(), men.end(), template_cmp);
+
+  for (int i = 0; i < n; i++) {
+    
+    if (i != 0 && men[i].programming == men[i - 1].programming) {
+      ap[i] = ap[i - 1];
+    } else {
+      ap[i] = i;
+    }
+
+  }
+  
+  for (int i = 0; i < n; i++) {
+    men[i].programming= ap[i];
+  }
+  
+  sort(men.begin(), men.end(), main_cmp);
+
+  build(tree, 0, 0, n_2 - 1);
+  
+  data_2 max_t, max_t_right, max_t_left;
+
+
+  
+  for (int i = n - 1; i >= 0; i--) {
+    
+    max_t = get_max(tree, 0, men[i].programming, men[i].programming, 0, n_2 - 1);
+    if (max_t.teacher < men[i].teacher) {
+      update(tree, 0, 0, n_2 - 1, men[i].programming, men[i].teacher, men[i].math, men[i]);
+    }
+    max_t = get_max(tree, 0, (men[i].programming + 1) % n_2, n_2 - 1, 0, n_2 - 1);
+
+    
+    if (max_t.teacher > men[i].teacher && max_t.programming > men[i].programming && max_t.math > men[i].math) {
+      cand[men[i].index] = true;
+    } 
+    else {
+
+      max_t_right = get_max(tree, 0, (max_t.programming + 1) % n_2, n_2 - 1, 0, n_2 - 1);
+      
+      if (max_t_right.teacher > men[i].teacher && max_t_right.programming > men[i].programming && max_t_right.math > men[i].math) {
+        cand[men[i].index] = true;
+      } 
+      else {
+        
+        max_t_left = get_max(tree, 0, (men[i].programming + 1) % n_2, max_t.programming - 1, 0, n_2 - 1);
+        
+        if (max_t_left.teacher > men[i].teacher && max_t_left.programming > men[i].programming && max_t_left.math > men[i].math) {
+          cand[men[i].index] = true;
+        } 
+        else {
+          
+          for (int j = 0; j < max_t.count_changes; j++) {
+            if (max_t.teach[j].math > men[i].math && max_t.teach[j].teacher > men[i].teacher && max_t.teach[j].programming > men[i].programming) {
+              cand[men[i].index] = true;
+            }
+          }
+          
+        }
+      }
+      
+    }
+  }
+
+  
+
+// output
+  for (int i = 0; i < n; i++) {
+    if (cand[i] == false) {
+      fout << i + 1 << ' ';
+    }
+  }
+
+  fout.close();
+
+  return 0;
+}

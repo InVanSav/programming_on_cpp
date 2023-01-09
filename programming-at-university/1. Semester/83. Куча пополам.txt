@@ -1,0 +1,36 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <deque>
+#include <cmath>
+#include <algorithm>
+
+uint32_t mdiff(uint32_t* src, short ind, uint32_t rem, uint32_t cur = 0) {
+  
+  if (cur >= rem) {
+    return cur - rem;
+  }
+  uint32_t min = UINT32_MAX;
+
+  for (short i = ind; i >= 0; --i) {
+    min = std::min(min, mdiff(src, i - 1, rem - src[i], cur + src[i]));
+  }
+  
+  return min;
+}
+
+
+int main() {
+  short num;
+  std::cin >> num;
+  uint32_t* nums = new uint32_t[num];
+  uint32_t sum = 0;
+  for (short i = 0; i < num; ++i) {
+    std::cin >> nums[i];
+    sum += nums[i];
+  }
+  std::cout << mdiff(nums, num - 1, sum);
+  return 0;
+}

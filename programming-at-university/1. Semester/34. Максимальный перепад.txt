@@ -1,0 +1,37 @@
+#include <iostream>
+#include <fstream>
+#include <math.h>
+
+using namespace std;
+
+int main()
+{ 
+  ifstream fin ("input.txt");
+  ofstream fout ("output.txt");
+  
+  int n, max = 0, max_drop = 0;
+  fin >> n;
+  int arr[n][n];
+
+  for (int i = 0; i < n; i++){
+    for (int j = 0; j < n; j++){
+      fin >> arr[i][j];
+    }
+  }
+  for (int i = 0; i < n; i++){
+    for (int j = 0; j < n; j++){
+      if ((max_drop < abs(arr[i][j] - arr[i][j+1])) && (j + 1 < n)){
+        max_drop = abs(arr[i][j] - arr[i][j+1]);
+      }
+    }
+  }
+  for (int j = 0; j < n; j++){
+    for (int i = 0; i < n; i++){
+      if ((max_drop < abs(arr[i][j] - arr[i+1][j])) && (i + 1 < n)){
+        max_drop = abs(arr[i][j] - arr[i+1][j]);
+      }
+    }
+  }
+  fout << max_drop;
+  return 0;
+}

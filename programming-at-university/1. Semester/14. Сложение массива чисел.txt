@@ -1,0 +1,56 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+  ifstream fin ("input.txt");
+  ofstream fout ("output.txt");
+
+unsigned int n, chisla;
+fin >> n;
+
+int i = 0, sum = 0;
+
+while (i < n)
+{
+  fin >> chisla;
+  sum += chisla;
+  i += 1;
+}
+
+fout << endl << sum << endl;
+
+return 0;
+}
+
+
+
+ИНОЙ СПОСОБ:
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+  ifstream fin ("input.txt");
+  ofstream fout ("output.txt");
+
+unsigned int n;
+int sum = 0;
+int mas[n];
+cin >> n;
+
+for (int p = 0; p < n; p++)
+  cin >> mas[p];
+
+for (int i = 0; i < n; i++)
+  sum += mas[i];
+
+cout << endl << sum << endl;
+
+return 0;
+}

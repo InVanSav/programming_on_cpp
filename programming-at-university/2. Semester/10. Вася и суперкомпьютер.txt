@@ -1,0 +1,50 @@
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
+int main() {
+
+    long long oneone = 0;
+    long long zerozero = 0;
+    std::vector<long long> onezero;
+    std::vector<long long> zeroone;
+    int n, sum = 0;
+
+    std::cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        std::string str;
+        int le;
+
+        std::cin >> le >> str;
+
+        if (str[0] == '0' && str[le - 1] == '0') {
+            zerozero += le;
+        } else if (str[0] == '1' && str[le - 1] == '1') {
+            oneone += le;
+        } else if (str[0] == '0') {
+            zeroone.push_back(le);
+        } else {
+            onezero.push_back(le);
+        }
+    }
+
+    sort(onezero.rbegin(), onezero.rend());
+    sort(zeroone.rbegin(), zeroone.rend());
+
+    if (onezero.size() == 0 && zeroone.size() == 0) {
+        std::cout << std::max(zerozero, oneone);
+        return 0;
+    }
+    for (int i = 0; zeroone.size() > i && onezero.size() > i; i++) {
+        sum += zeroone[i] + onezero[i];
+    }
+    if(zeroone.size()>onezero.size()){
+        sum += zeroone[onezero.size()];
+    } else if(onezero.size() > zeroone.size()){
+        sum += onezero[zeroone.size()];
+    }
+    sum += zerozero + oneone;
+
+    std::cout << sum;
+}

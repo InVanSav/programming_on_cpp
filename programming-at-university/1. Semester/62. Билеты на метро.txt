@@ -1,0 +1,36 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <deque>
+#include <cmath>
+
+int main() {
+
+  int sixty = 0, one = 0, ten = 0, n, flag = 0;
+  std::cin >> n;
+
+  sixty = n / 60;
+
+  if (n % 60 > 34) {
+    sixty++;
+    flag = 1;
+  }
+  else {
+    n %= 60;
+  }
+
+  if (flag == 0) {
+    ten = n / 10;
+    if (n % 10 == 9) {
+      ten++;
+    }
+    else {
+      n %= 10;
+      one = n;
+    }
+  }
+  std::cout << one << " " << ten << " " << sixty;
+  return 0;
+}

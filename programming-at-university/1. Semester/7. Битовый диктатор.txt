@@ -1,0 +1,15 @@
+*FILE* fin = fopen("input.txt", "r");
+  unsigned int a;
+  unsigned int b;
+  unsigned int c;
+  fscanf (fin, "%u%u%u", &a,&b,&c);
+  int d,p,u,q,l;
+  int j = 1073741823;
+  d = a/4;
+  p = d * 16;
+  u = (p ^ b)*2;
+  q = u|c;
+  l = q&j;
+  FILE* fout = fopen ("output.txt", "w");
+  fprintf (fout, "%d", l);
+  return 0;

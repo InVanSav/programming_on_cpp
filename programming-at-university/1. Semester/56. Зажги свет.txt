@@ -1,0 +1,26 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+  
+  int arr[4], count = 0;
+  bool val = true;
+  for (int i = 0; i < 4; i++) {
+    std::cin >> arr[i];
+    if (arr[i] == 1) {
+      count++;
+    }
+  }
+  for (int i = 0; i < 4; i++) {
+    val = val && (arr[i] != 1 || arr[i+1] != 1);
+  } 
+  if ((val && count == 2) || count > 2) {
+    std::cout << "YES";
+  }
+  else {
+    std::cout << "NO";
+  }
+  return 0;
+}

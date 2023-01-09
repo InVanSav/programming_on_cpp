@@ -1,0 +1,19 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+
+int main() {
+  
+  std::ifstream fin ("input.txt");
+  std::ofstream fout ("output.txt");
+
+  int a, b, c, d, count;
+  std::cin >> a >> b >> c >> d;
+
+  for (int i = a; i <= b; i++) {
+    if (i % d == c) {
+      std::cout << i << " ";
+    }
+  }
+  return 0;
+}

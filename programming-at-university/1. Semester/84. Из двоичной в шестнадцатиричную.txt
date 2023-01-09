@@ -1,0 +1,32 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <deque>
+#include <cmath>
+#include <algorithm>
+
+int main() {
+  
+  std::ifstream fin ("input.txt");
+  std::ofstream fout ("output.txt");
+
+  int arr_2[16] = {0, 1, 10, 11, 100, 101, 110, 111, 1000, 1001, 1010, 1011, 1100, 1101, 1110, 1111}, n; 
+  int arr_16[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'};
+
+  std::cin >> n;
+
+  for (int i = 0; i < 16; i++) {
+    if (arr_2[i] == n) {
+      if (i < 10) {
+        std::cout << arr_16[i];
+      }
+      else {
+        std::cout << (char)arr_16[i];
+      }
+    }
+  }
+  
+  return 0;
+}

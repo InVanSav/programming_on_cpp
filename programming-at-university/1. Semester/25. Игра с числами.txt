@@ -1,0 +1,39 @@
+#include <cstdlib>
+#include <time.h>
+
+using namespace std;
+
+int main()
+{
+  rend (seed:time(timer:0));
+  int l, r;
+  std::cout << "Введите левую границу диапазона" << std::endl;
+  std::cin >> l;
+  std::cout << "Введите правую границу диапазона" << std::endl;
+  std::cin >> r;
+  int secret = rand() % r + l;
+  std::cout << secret;
+  
+  int buf, code;
+
+  do 
+  {
+  std::cout << "Число в диапазоне от" << l << "до" << r << std::endl;
+  std:: cin >> buf;
+
+  if (buf > secret) 
+  {
+    std::cout << "Меньше" << std::endl;
+  }
+  else if (buf != secret)
+  {
+    std::cout << "Больше" << std::endl;
+  }
+  std::cout << "Echo" << std::endl;
+  std::cin >> buf;
+  }
+  
+  while(buf != code);
+
+  std::cout << "WIN";
+  std::cout << secret;

@@ -1,0 +1,30 @@
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+int main ()
+{
+ ifstream fin ("input.txt");
+ ofstream fout ("output.txt");
+
+ unsigned int castle, pl_for_cas;
+ int pl_for_gar;
+
+ fin >> castle >> pl_for_cas;
+ 
+if ((castle*castle) > pl_for_cas)
+ {
+  fout << -1 << endl;
+ }
+else if (pl_for_cas == castle)
+ {
+  pl_for_gar = 0;
+    fout << pl_for_gar << endl;
+ }
+else
+{
+  pl_for_gar = pl_for_cas - (castle*castle);
+    fout << pl_for_gar << endl;
+}
+ return 0;
+}

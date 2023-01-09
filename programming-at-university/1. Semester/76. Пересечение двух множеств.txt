@@ -1,0 +1,39 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <deque>
+#include <cmath>
+
+int main() {
+
+  std::ifstream fin ("input.txt");
+  std::ofstream fout ("output.txt");
+
+  int n, m;
+  fin >> n;
+  int arr[n];
+  
+  for (int i = 0; i < n; i++) {
+    fin >> arr[i];
+  }
+
+  fin >> m;
+  int arr_1[m];
+
+  for (int i = 0; i < m; i++) {
+    fin >> arr_1[i];
+  }
+
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+      if (arr[i] == arr_1[j] && arr_1[j] != -35) {
+        fout << arr[i] << " ";
+        arr_1[j] = -35;
+        break;
+      }
+    }
+  }
+  return 0;
+}

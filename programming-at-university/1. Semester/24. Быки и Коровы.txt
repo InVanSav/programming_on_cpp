@@ -1,0 +1,86 @@
+#include <iostream>
+#include <cstdlib>
+#include <time.h>
+
+using namespace std;
+
+int main()
+{
+  cout << "Мы начинаем игру 'Быки и коровы'" << endl << endl;
+  cout << "Правила игры: " << endl;
+  cout << "1. Программа загадывает случайное число в пределах от 1000 до 9999." << endl;
+  cout << "2. Вы должны попытаться отгадать это число, вводя его с консоли." << endl;
+  cout << "3. Программа выдает подсказку. Например: 'быков: N, коров: K', где коровы — количество совпавших цифр числа, не стоящих на своих местах, быки  — количество цифр числа, которые стоят на своих позициях." << endl;
+  cout << "4. Шаги 2-3 повторяются до тех пор, пока Вы не отгадаете число." << endl << endl;
+
+  srand (time(0));
+  int l = 1000, r = 9999; 
+  /*std::cout << "Выберите начало диапазона от 1000:" << std::endl;
+  std::cin >> l;
+  std::cout << "Выберите границу диапазона до 9999 (включительно):" << std::endl;
+  std::cin >> r;*/
+  int secret = rand() % (r + l);
+  cout << "Это значение мы типа не знаем" << ": " << secret << endl;
+  int ololo;
+
+  while (ololo != secret) 
+  {
+    cout << endl << "Ваше числo [1000-9999]:" << endl;
+    cin >> ololo;
+  
+      if (ololo == secret)
+      {
+        cout << "Я за Вас рад, конечно, но не искренне:)" << endl << endl << "Посмотрим, получится ли у Вас снова." << endl;
+        break;
+      }    
+      else if (ololo != secret)
+      { 
+        int n = 1, secret_1 = secret;
+        int p = 1, ololo_1 = ololo;
+
+        while ((secret_1 /= 10) > 0) n++;
+        while ((ololo_1 /= 10) > 0) p++;
+
+        int o_m[n],s_m[p], secret_2 = secret, ololo_2 = ololo;
+
+        for (int i = 0; i < n; i++)
+        {
+          o_m[i] = ololo_2 % 10;
+          ololo_2 = ololo_2 / 10;
+        }
+        for (int j = 0; j < p; j++)
+        {
+          s_m[j] = secret_2 % 10;
+          secret_2 = secret_2 / 10;
+        }
+
+        int kol_byk = 0;
+        int kol_kor = 0;
+
+        if (ololo < 1000 || ololo > 9999)
+        {
+          cout << endl << "ERROR_OUT_OF_BOUNDS_OF_THE_ARRAY!" << endl;
+        }
+        else
+        { 
+          for (int i = 0; i < n; i++)
+          {
+            (s_m[i] == o_m[i]) ? kol_byk += 1 : kol_byk;
+
+            if (s_m[i] == o_m[i])
+            {
+              s_m[i] = 0;
+            }
+          }
+          for (int i = 0, j = 0; i < n; i++)
+          {
+            (s_m[i] != 0 && ((s_m[i] == o_m[j]) || (s_m[i] == o_m[j+1]) || (s_m[i] == o_m[j+2]) || (s_m[i] == o_m[j+3]))) ? kol_kor += 1 : kol_kor;
+          }
+
+          cout << "Быков: " << kol_byk << " " << "Коров: " << kol_kor << endl;
+        }
+        
+      }
+  }    
+  return 0;
+}

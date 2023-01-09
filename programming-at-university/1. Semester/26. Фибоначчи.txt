@@ -1,0 +1,27 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+  ifstream fin ("input.txt");
+  ofstream fout ("output.txt");
+  
+  unsigned long long n, f_1, f_2, b;
+
+  fin >> n;
+
+  f_1 = 0;
+  f_2 = 1;
+    
+  for (int i = 0; i < n; i++)
+  {
+    fout << f_1 << " ";
+    b = f_2;
+    f_2 = f_1;
+    f_1 = b + f_2;
+  }
+  fout << endl;
+  return 0;
+}

@@ -1,0 +1,18 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+  
+  int n, m, drive;
+  std::cin >> n >> m;
+  
+  drive = m / n;
+  if (m % n != 0) {
+    drive += 1;
+  }
+
+  std::cout << drive;
+  return 0;
+}

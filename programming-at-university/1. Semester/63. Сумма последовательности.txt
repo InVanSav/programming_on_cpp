@@ -1,0 +1,22 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main() {
+  ifstream fin ("input.txt");
+  ofstream fout ("output.txt");
+
+  int n, chisla = 10;
+
+  int sum = 0;
+
+  while (chisla != 0) {
+    fin >> chisla;
+    sum += chisla;
+  }
+
+  fout << sum;
+
+  return 0;
+}

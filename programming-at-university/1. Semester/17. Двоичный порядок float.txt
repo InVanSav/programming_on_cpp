@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+float vesh_ch;
+cin >> vesh_ch;
+int per = *(int*)(&vesh_ch);
+per = per << 1;
+per = per >> 24;
+per = per & (0x00FF);
+
+if((vesh_ch!=0) && (per==0))
+{
+  cout << "-126";
+} 
+else if((per==0)&&(vesh_ch==0)) 
+{
+  cout << 0;
+}
+else 
+{
+  cout << per-127;
+}
+
+return 0;
+} 

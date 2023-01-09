@@ -1,0 +1,34 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <deque>
+#include <cmath>
+
+int main() {
+
+  std::ifstream fin ("input.txt");
+  std::ofstream fout ("output.txt");
+
+  int n, count = 0;
+  fin >> n;
+  int arr[n];
+
+  for (int i = 0; i < n; i++) {
+    fin >> arr[i];
+  }
+
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      if (arr[i] == arr[j]) {
+        count++;
+      }
+    }
+    if (count == 1) {
+      fout << arr[i] << " ";
+    }
+    count = 0;
+  }
+  return 0;
+}

@@ -1,0 +1,26 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <deque>
+#include <cmath>
+
+int main() {
+
+  std::ifstream fin ("input.txt");
+  std::ofstream fout ("output.txt");
+
+  int a, b, a_1, b_1, a_2, b_2;
+  std::cin >> a >> b;
+  a_2 = a + a % 2;
+  b_2 = b - b % 2;
+  int even = (b_2 + a_2) / 2 * ((b_2 - a_2) / 2 + 1);
+  a_1 = a + (1 - a % 2);
+  b_1 = b - (1 - b % 2);
+  int odd = (b_1 + a_1) / 2 * ((b_1 - a_1) / 2 + 1);
+  
+  std::cout << even - odd;
+    
+  return 0;
+}

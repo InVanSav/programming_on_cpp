@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <math.h>
+int main()
+{
+ FILE* fin = fopen ("input.txt", "r");
+  unsigned int x;
+  unsigned int k;
+  fscanf (fin, "%d%d", &x, &k);
+  unsigned int c;
+  FILE* fout = fopen ("output.txt", "w"); 
+      if (pow(2,k)>x)
+        c = 0;
+      else
+        c = (x >> k) & 1;
+    fprintf (fout, "%d", c);
+  return 0;
+}
+
+
+Другой вариант:
+
+#include <stdio.h>
+int main()
+{
+ FILE* fin = fopen ("input.txt", "r");
+  unsigned int x;
+  unsigned int k;
+  fscanf (fin, "%d%d", &x, &k);
+  unsigned int c;
+  FILE* fout = fopen ("output.txt", "w");
+     if (k>31)
+        c = 0;
+      else
+        c = (x >> k) & 1; 
+    fprintf (fout, "%d", c);
+  return 0;
+}

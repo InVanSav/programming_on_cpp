@@ -1,0 +1,10 @@
+#include <stdio.h>
+
+int main()
+{
+  float M;
+  float N;
+ scanf ("%f%f", &M, &N);
+ printf("%f", M/N);
+return 0;
+  } 

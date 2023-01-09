@@ -1,0 +1,26 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <deque>
+#include <cmath>
+
+int main() {
+
+  std::ifstream fin ("input.txt");
+  std::ofstream fout ("output.txt");
+
+  int a, b, c, x = 0, y;
+  std::cin >> a >> b >> c;
+
+  while ((a >= b) && (b >= c)) {
+    y = a / b * (b / c);
+    a -= y * c;
+    x += y;
+  }
+
+  std::cout << x;
+
+  return 0;
+}
